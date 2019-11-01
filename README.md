@@ -4,12 +4,14 @@
 
 - Java
 
-## 技术选型
+## 关键依赖
 
-模板引擎
+模板引擎：
+
 - [Mustache](https://github.com/samskivert/jmustache)
 
-解析器生成器
+解析器生成器：
+
 - [ANTLR](https://github.com/antlr/antlr4)
 
 ## 生成优先级
