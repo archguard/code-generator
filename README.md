@@ -5,7 +5,7 @@
 ## 技术选型
 
 模板引擎
-- (Handlebars)[https://github.com/jknack/handlebars.java]
+- [Handlebars](https://github.com/jknack/handlebars.java)
 
 解析器生成器
-- (ANTLR)[https://github.com/antlr/antlr4]
+- [ANTLR](https://github.com/antlr/antlr4)
