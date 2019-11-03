@@ -2,12 +2,11 @@ package com.thoughtworks.paoding.codegenerator.adapters.inbound.rest.resources;
 
 import com.thoughtworks.paoding.codegenerator.application.usecases.GenerateDirectoriesUseCase;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 
+import static org.springframework.http.HttpStatus.NO_CONTENT;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
@@ -22,7 +21,8 @@ public class CodeResource {
     }
 
     @PostMapping(consumes = APPLICATION_JSON_VALUE)
-    public void post() throws IOException {
-        generateDirectoriesUseCase.apply();
+    @ResponseStatus(NO_CONTENT)
+    public void post(@RequestBody GenerateCodeData data) throws IOException {
+        generateDirectoriesUseCase.apply(data.group, data.artifact);
     }
 }

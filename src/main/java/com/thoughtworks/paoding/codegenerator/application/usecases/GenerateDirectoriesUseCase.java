@@ -18,7 +18,7 @@ public class GenerateDirectoriesUseCase {
         this.generator = generator;
     }
 
-    public void apply() throws IOException {
-        generator.generate(properties.getRootPath());
+    public void apply(String groupName, String artifactName) throws IOException {
+        generator.generate(properties.getRootPath(), groupName, artifactName);
     }
 }

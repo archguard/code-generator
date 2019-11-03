@@ -3,5 +3,5 @@ package com.thoughtworks.paoding.codegenerator.domain.contexts.generatorcontext.
 import java.io.IOException;
 
 public interface DirectoriesGenerator {
-    void generate(String rootPath) throws IOException;
+    void generate(String rootPath, String groupName, String artifactName) throws IOException;
 }
