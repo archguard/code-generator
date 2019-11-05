@@ -1,6 +1,2 @@
-spring:
-  mustache:
-    check-template-location: false
-
 project-generator:
   target-path: "./generated-code"

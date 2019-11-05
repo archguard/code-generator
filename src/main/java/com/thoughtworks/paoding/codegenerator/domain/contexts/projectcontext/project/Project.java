@@ -4,15 +4,15 @@ import lombok.Getter;
 
 @Getter
 public class Project {
-    private String groupName;
-    private String artifactName;
+    private String group;
+    private String artifact;
 
-    Project(String groupName, String artifactName) {
-        this.groupName = groupName;
-        this.artifactName = artifactName;
+    Project(String group, String artifact) {
+        this.group = group;
+        this.artifact = artifact;
     }
 
     public String getPackageName() {
-        return String.format("%s.%s", groupName, artifactName);
+        return String.format("%s.%s", group, artifact);
     }
 }
