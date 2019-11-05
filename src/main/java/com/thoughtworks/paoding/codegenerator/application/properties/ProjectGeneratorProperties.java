@@ -5,8 +5,8 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@ConfigurationProperties(prefix = "code-generator")
+@ConfigurationProperties(prefix = "project-generator")
 @Data
-public class CodeGeneratorProperties {
-    private String rootPath;
+public class ProjectGeneratorProperties {
+    private String targetPath;
 }
