@@ -47,18 +47,19 @@ public class ProjectGeneratorImpl implements ProjectGenerator {
 
     @Override
     public void generate(String targetPath, Project project) throws RuntimeException, IOException {
-        generateFileStructure(targetPath, project);
-        generateGradleFiles(targetPath, project);
+        final var projectPath = targetPath + "/" + project.getArtifact();
+        generateFileStructure(projectPath, project);
+        generateGradleFiles(projectPath, project);
     }
 
-    private void generateGradleFiles(String targetPath, Project project) throws IOException {
-        compileGradleFile(targetPath, project, gradleBuildTemplate, "build.gradle");
-        compileGradleFile(targetPath, project, gradleSettingsTemplate, "settings.gradle");
+    private void generateGradleFiles(String projectPath, Project project) throws IOException {
+        compileGradleFile(projectPath, project, gradleBuildTemplate, "build.gradle");
+        compileGradleFile(projectPath, project, gradleSettingsTemplate, "settings.gradle");
 
-        copyGradlewFile(targetPath, project, gradlewShellScript, "gradlew");
-        copyGradlewFile(targetPath, project, gradlewBatScript, "gradlew.bat");
+        copyGradlewFile(projectPath, gradlewShellScript, "gradlew");
+        copyGradlewFile(projectPath, gradlewBatScript, "gradlew.bat");
 
-        final var gradleWrapperPath = Paths.get(targetPath, project.getArtifact(), "gradle/wrapper");
+        final var gradleWrapperPath = Paths.get(projectPath, "gradle/wrapper");
         Files.createDirectories(gradleWrapperPath);
         copyGradleWrapperFile(gradleWrapperPath.toString(), gradleWrapperJar, "gradle-wrapper.jar");
         copyGradleWrapperFile(gradleWrapperPath.toString(), gradleWrapperProperties, "gradle-wrapper.properties");
@@ -68,22 +69,22 @@ public class ProjectGeneratorImpl implements ProjectGenerator {
         Files.copy(gradleWrapperJar.getFile().toPath(), Paths.get(gradleWrapperPath, fileName), REPLACE_EXISTING);
     }
 
-    private void copyGradlewFile(String targetPath, Project project, Resource resource, String fileName) throws IOException {
-        Files.copy(resource.getFile().toPath(), Paths.get(targetPath, project.getArtifact(), fileName), REPLACE_EXISTING);
+    private void copyGradlewFile(String projectPath, Resource resource, String fileName) throws IOException {
+        Files.copy(resource.getFile().toPath(), Paths.get(projectPath, fileName), REPLACE_EXISTING);
     }
 
-    private void compileGradleFile(String targetPath, Project project, Resource template, String fileName) throws IOException {
+    private void compileGradleFile(String projectPath, Project project, Resource template, String fileName) throws IOException {
         final var gradleBuildStr = compiler.compile(new FileReader(template.getFile()))
                 .execute(project);
-        Files.writeString(Paths.get(targetPath, project.getArtifact(), fileName), gradleBuildStr);
+        Files.writeString(Paths.get(projectPath, fileName), gradleBuildStr);
     }
 
-    private void generateFileStructure(String targetPath, Project project) throws IOException {
-        final var domainPath = mainJavaPath(targetPath, project, "domain");
-        final var applicationPath = mainJavaPath(targetPath, project, "application");
-        final var inboundAdaptersPath = mainJavaPath(targetPath, project, "adapters/inbound");
-        final var outboundAdaptersPath = mainJavaPath(targetPath, project, "adapters/outbound");
-        final var resourcePath = mainResourcePath(targetPath, project);
+    private void generateFileStructure(String projectPath, Project project) throws IOException {
+        final var domainPath = mainJavaPath(projectPath, project, "domain");
+        final var applicationPath = mainJavaPath(projectPath, project, "application");
+        final var inboundAdaptersPath = mainJavaPath(projectPath, project, "adapters/inbound");
+        final var outboundAdaptersPath = mainJavaPath(projectPath, project, "adapters/outbound");
+        final var resourcePath = mainResourcePath(projectPath);
 
         final var paths = List.of(
                 domainPath,
@@ -98,12 +99,12 @@ public class ProjectGeneratorImpl implements ProjectGenerator {
         }
     }
 
-    private Path mainResourcePath(String targetPath, Project project) {
-        return Paths.get(targetPath, project.getArtifact(), "src/main/resource");
+    private Path mainResourcePath(String projectPath) {
+        return Paths.get(projectPath, "src/main/resource");
     }
 
-    private Path mainJavaPath(String targetPath, Project project, String path) {
-        return Paths.get(targetPath, project.getArtifact(), "src/main/java/", packagePath(project), path);
+    private Path mainJavaPath(String projectPath, Project project, String path) {
+        return Paths.get(projectPath, "src/main/java/", packagePath(project), path);
     }
 
     private String packagePath(Project project) {
