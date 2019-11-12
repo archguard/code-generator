@@ -19,7 +19,7 @@ public class Entity {
         this.valueObjects = new ArrayList<>();
     }
 
-    public List<Entity> getSubEntities() {
+    public List<Entity> getSubEntieties() {
         return List.copyOf(subEntities);
     }
 
