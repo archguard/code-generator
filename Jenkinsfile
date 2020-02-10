@@ -4,6 +4,9 @@ pipeline {
         registryCredential = 'DockerHubCredentials'
         dockerImage = ''
     }
+    tools {
+        jdk 'openjdk-11'
+    }
     agent any
     stages {
         stage('Build') {
