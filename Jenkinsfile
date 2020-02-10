@@ -1,20 +1,29 @@
 pipeline {
+    environment {
+        registry = 'hule0912/demo'
+        registryCredential = 'DockerHubCredentials'
+        dockerImage = ''
+    }
     agent any
     stages {
-        def app
         stage('Build') {
             steps {
                 sh './gradlew build'
             }
         }
         stage('Build Image') {
-            app = docker.build("hule0912/demo")
+         steps{
+            script {
+              dockerImage = docker.build registry + ":$BUILD_NUMBER"
+            }
+         }
         }
         stage('Push image') {
-            docker.withRegistry('https://registry.hub.docker.com', 'DockerHubCredentials') {
-                app.push("${env.BUILD_NUMBER}")
-                app.push("latest")
-            }
+            script {
+                  docker.withRegistry('https://registry.hub.docker.com', registryCredential ) {
+                    dockerImage.push()
+                  }
+             }
         }
     }
 }
