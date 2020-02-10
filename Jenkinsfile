@@ -12,18 +12,20 @@ pipeline {
             }
         }
         stage('Build Image') {
-         steps{
-            script {
-              dockerImage = docker.build registry + ":$BUILD_NUMBER"
+            steps{
+               script {
+                 dockerImage = docker.build registry + ":$BUILD_NUMBER"
+               }
             }
-         }
         }
         stage('Push image') {
-            script {
-                  docker.withRegistry('https://registry.hub.docker.com', registryCredential ) {
-                    dockerImage.push()
-                  }
-             }
+            steps{
+                script {
+                      docker.withRegistry('https://registry.hub.docker.com', registryCredential ) {
+                        dockerImage.push()
+                      }
+                 }
+            }
         }
     }
 }
