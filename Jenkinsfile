@@ -28,10 +28,10 @@ pipeline {
                }
             }
         }
-	/* stage('Deploy dev') {
+	stage('Deploy dev') {
 	    steps{
 	        sh 'kubectl apply -f ./deploy_k8s.yml -n dev_env'
 	    }
-	} */
+	}
     }
 }
