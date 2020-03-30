@@ -18,20 +18,5 @@ pipeline {
                 sh './gradlew build'
             }
         }
-        stage('Build Image') {
-            steps{
-               script {
-                 dockerImage = docker.build registry + ":$BUILD_NUMBER"
-                 docker.withRegistry('https://registry.hub.docker.com', registryCredential ) {
-                     dockerImage.push()
-                 }
-               }
-            }
-        }
-	stage('Deploy dev') {
-	    steps{
-	        sh 'kubectl apply -f ./deploy_k8s.yml -n dev_env'
-	    }
-	}
     }
 }
